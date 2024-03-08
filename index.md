@@ -8,15 +8,17 @@ title: DREAM Project Site
 
 ## About Me
 
-My info goes here.
+My name is Kate Raitz and I began the CS@Mines Bridge Program in Fall of 2021. My previous education had been earning a Master's degree in Psychology, with a focus on clinical applications. I applied these clinical applications in rehabilitation therapy, a study on grief work, and Applied Behavior Analysis. As I worked with behavior analysis, I grew more interested in the cognitive processes that are behind learning, and so I started volunteering as a lab assistant in a research group at George Mason University called the Computational Social Neuroscience Group. Here I collected behavioral data using a computational model of Pavlovian-Instrumental interactions during social and monetary reinforcement learning tasks. This is what initially got me interested in ML. I wanted to learn better computational skills for use in neuroscience, and so I started moving towards returning to school for CS. Now, after being trained and better learning the skills needed behind predictive analyses, I am focusing on gaining Data Science skills.
+For my first year in the Bridge program, I was working an office job full-time, and I completed introductory coursework as a part-time student. I learned basic programming and data structures, as well as computer organization and the Linux system. My second year at school I learned more about operating systems, computer architecture, discrete maths, programming algorithms, machine learning, and computational numerical analyses. This third year, I have been strengthening my mathematical maturity by working with calculus, probabilty, and linear algebra. I plan to graduate in December of 2024 with a MS in CS.
+You can contact me at kraitz@mines.edu to connect or discuss any questions.
 
 ## About My Advisor
 
-Advisor info goes here.
+I chose to do research with Dr. Samy Wu Fung, Assistant Professor of both Applied Mathematics and Statistics (AMS) and CS departments at Colorado School of Mines, because of his research focusing on optimization and deep learning. We determined a project for me which would delve into a certain type of neural network (NN) called an implicit NN. Dr. Samy's website is https://swufung.github.io.
 
 ## About My Project
 
-Project description goes here.
+My research project is on the numerical analyses needed to evaluate fixed point problems, and applying these to deep learning. These consequential NNs are called implicit networks. My goals for this project are to understand the efficiency gained in computing predictions with NNs consisting of the fixed point layer, and how this computational complexity differs from vanilla NNs. I will conceptualize the training and storage impacted by evaluations that don't rely on gradient descent in traditional backpropagation, as well as how error bounds are impacted. Synopses of work completed towards these objectives will be recorded in My Blog.
 
 [My Final Report](files/finalreport.pdf)
 
