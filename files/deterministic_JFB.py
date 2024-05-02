@@ -209,7 +209,7 @@ class Trainer:
             # scheduler.step(val_loss)  # Update the learning rate
 
             # Print Statistics
-            print(f'Epoch {epoch + 1}: Training Loss = {self.training_metrics["training loss"][-1]:.4f}, Training Accuracy = {self.training_metrics["training accuracy"][-1] * 100:.2f}%, Validation Loss = {self.training_metrics["validation loss"][-1]:.4f}, Validation Accuracy = {self.training_metrics["validation accuracy"][-1] * 100:.2f}%')
+            print(f'Batch {self.config.batch_size}... Epoch {epoch + 1}: Training Loss = {self.training_metrics["training loss"][-1]:.4f}, Training Accuracy = {self.training_metrics["training accuracy"][-1] * 100:.2f}%, Validation Loss = {self.training_metrics["validation loss"][-1]:.4f}, Validation Accuracy = {self.training_metrics["validation accuracy"][-1] * 100:.2f}%')
 
         # Overall training time across all epochs
         total_training_time = time.time() - start_time
@@ -218,7 +218,7 @@ class Trainer:
 
         print(f"Finished training dataset with batch size {self.config.batch_size}. Training completed in {self.training_time_minutes:.2f} minutes")
         with open('output.txt', 'a') as file:
-            print(f"Lowest loss value is {lowest_loss:.4f} first reached at Epoch {self.saved_epoch}", file=file)
+            print(f"Batch size {self.config.batch_size}... Lowest loss value is {lowest_loss:.4f} first reached at Epoch {self.saved_epoch}. Total training took {total_training_time} seconds, or  {self.training_time_minutes} minutes to complete.", file=file)
 
         self.save_training_metrics(self.config.batch_size)
 
@@ -275,33 +275,16 @@ class Trainer:
 
     @staticmethod
     def plot_metrics():
-        plt.figure(figsize=(12+5, 5+2))
+        plt.figure(figsize=(17, 5))
 
-        # Plot Training Loss
-        plt.subplot(1, 2, 1)  # Subplot in idx [1,1] of [1,2]
-        files = sorted([f for f in os.listdir('.') if f.startswith('metrics_batch_') and f.endswith('.pkl')], key=Helper.extract_number)
-        colors = plt.cm.viridis(np.linspace(0, 1, len(files)))
-        for idx, file in enumerate(files):
-            with open(file, 'rb') as f:
-                metrics = pickle.load(f)
-                label = f"Batch Size: {file.split('_')[-1].split('.')[0]}"
-                plt.semilogy(metrics['training loss'], label=label, alpha=0.9, linewidth=3, color=colors[idx])
-        plt.subplots_adjust(left=0.5)
-        plt.title('Training Cost Function Minimization Across Batch Size')
-        plt.xlabel('Epoch')
-        plt.ylabel('Log Loss')
-        plt.legend(loc='upper right', bbox_to_anchor=(1, 1), fancybox=True, shadow=True, fontsize='medium')
-        plt.grid(True)
-
-        # Plot Accuracy
-        plt.subplot(1, 2, 2)  # Subplot in idx [1,2] of [1,2]
+        # Plot Training Accuracy
         for idx, file in enumerate(files):
             with open(file, 'rb') as f:
                 metrics = pickle.load(f)
                 label = f"Batch Size: {file.split('_')[-1].split('.')[0]}"
                 plt.semilogy(metrics['training accuracy'], label=label, alpha=0.9, linewidth=3, color=colors[idx])
         plt.gca().yaxis.set_major_formatter(ticker.PercentFormatter(xmax=1))
-        plt.title('Training Accuracy of Model Across Batch Size')
+        plt.title('Training Accuracy Across Batch Size')
         plt.xlabel('Epoch')
         plt.ylabel('Accuracy %')
         plt.legend(loc='lower right', fancybox=True, shadow=True, fontsize='medium')
@@ -310,7 +293,7 @@ class Trainer:
 
     @staticmethod
     def plot_val_metrics():
-        plt.figure(figsize=(12+5, 5+2))
+        plt.figure(figsize=(17, 8))
 
         # Plot Training Loss
         plt.subplot(1, 2, 1)  # Subplot in idx [1,1] of [1,2]
@@ -322,13 +305,13 @@ class Trainer:
                 label = f"Batch Size: {file.split('_')[-1].split('.')[0]}"
                 plt.semilogy(metrics['validation loss'], label=label, alpha=0.9, linewidth=3, color=colors[idx])
         plt.subplots_adjust(left=0.5)
-        plt.title('Validation Cost Function Minimization Across Batch Size')
+        plt.title('Validation Loss Across Batch Size')
         plt.xlabel('Epoch')
-        plt.ylabel('Log Loss')
+        plt.ylabel('Validation Log Loss')
         plt.legend(loc='upper right', bbox_to_anchor=(1, 1), fancybox=True, shadow=True, fontsize='medium')
         plt.grid(True)
 
-        # Plot Accuracy
+        # Plot Training Accuracy
         plt.subplot(1, 2, 2)  # Subplot in idx [1,2] of [1,2]
         for idx, file in enumerate(files):
             with open(file, 'rb') as f:
@@ -336,7 +319,7 @@ class Trainer:
                 label = f"Batch Size: {file.split('_')[-1].split('.')[0]}"
                 plt.semilogy(metrics['validation accuracy'], label=label, alpha=0.9, linewidth=3, color=colors[idx])
         plt.gca().yaxis.set_major_formatter(ticker.PercentFormatter(xmax=1))
-        plt.title('Validation Accuracy of Model Across Batch Size')
+        plt.title('Validation Accuracy Across Batch Size')
         plt.xlabel('Epoch')
         plt.ylabel('Accuracy %')
         plt.legend(loc='lower right', fancybox=True, shadow=True, fontsize='medium')
@@ -345,6 +328,7 @@ class Trainer:
 
     @staticmethod
     def plot_training_times():
+        # This plots cost function as well
         plt.figure(figsize=(12+5, 5+2))
 
         plt.subplot(1, 2, 1)  # Subplot in idx [1,1] of [1,2]
@@ -373,9 +357,9 @@ class Trainer:
                     plt.plot(real_epoch_times[-1], training_losses[-1], 'ro', markersize=8, markeredgewidth=1,
                              markeredgecolor='r', markerfacecolor='none')
 
-        plt.xlabel('Understanding Training by Batch Size Total Time (s)') #Total Training Time for Designated Num Epochs (seconds)
-        plt.ylabel('Training Loss')
-        plt.title('Training Loss Over Time by Batch Size')
+        plt.xlabel('Time (seconds)') #Total Training Time for Designated Num Epochs (seconds)
+        plt.ylabel('Training Log Loss')
+        plt.title('Training Loss Over Time Across Batch Size')
         plt.legend(loc='upper right', fancybox=True, shadow=True, fontsize='medium')
         plt.grid(True)
 
@@ -387,8 +371,8 @@ class Trainer:
             epochs = list(range(1, len(training_losses) + 1))
             plt.semilogy(epochs, training_losses, label=f'Batch Size: {file.split("_")[-1].split(".")[0]}', color=colors[idx], linewidth=3, alpha=0.9)
         plt.xlabel('Epochs')
-        plt.ylabel('Training Loss')
-        plt.title('Batch Size Impact on Num Epochs Needed to Minimize Cost')
+        plt.ylabel('Training Log Loss')
+        plt.title('Training Loss Across Batch Size')
         plt.legend(loc='upper right', fancybox=True, shadow=True, fontsize='medium')
         plt.grid(True)
 
