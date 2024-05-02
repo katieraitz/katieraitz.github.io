@@ -276,6 +276,8 @@ class Trainer:
     @staticmethod
     def plot_metrics():
         plt.figure(figsize=(17, 5))
+        files = sorted([f for f in os.listdir('.') if f.startswith('metrics_batch_') and f.endswith('.pkl')], key=Helper.extract_number)
+        colors = plt.cm.viridis(np.linspace(0, 1, len(files)))
 
         # Plot Training Accuracy
         for idx, file in enumerate(files):
